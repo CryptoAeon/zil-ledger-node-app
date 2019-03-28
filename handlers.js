@@ -6,6 +6,7 @@ const chalk = require('chalk');
 const fs = require('fs');
 const curl = require('curlrequest')
 
+const ELF_URL = 'https://github.com/CryptoAeon/zil-ledger-nano-s/releases/download/0.1/app.hex';
 
 function getReadlineInterface() {
     return readline.createInterface({
@@ -13,8 +14,6 @@ function getReadlineInterface() {
         output: process.stdout
     });
 }
-
-const ELF_URL = 'https://github.com/CryptoAeon/zil-ledger-nano-s/releases/download/0.1/app.hex';
 
 async function open() {
     try {
@@ -39,18 +38,23 @@ async function installApp() {
                     return resolve(err);
                 }
 
-                console.info("Saved Zilliqa hex file. Ledger device will ask you for confirmations...");
-                throw Error("not implemented yet");
+                console.info(chalk.blue("Saved Zilliqa hex file."));
+                console.info(chalk.blue("Ledger device will ask you for confirmations..."));
 
+                const proc = require("./installApp");
+                proc.on('exit', (exitCode) => {
+                    if (exitCode !== 0) {
+                        console.error(`Installation failed: ${exitCode}`);
+                    }
+                    else {
+                        console.info(chalk.blue(`Installation successful!`));
+                    }
+                    return resolve({exitCode});
+                });
             });
         });
 
     });
-
-    //python -m ledgerblue.loadApp --path "44'/313'"
-    // --curve secp256k1 --tlv --targetId 0x31100004
-    // --delete --fileName bin/app.hex --appName Zilliqa
-    // -appVersion 0.1.0 --appFlags 0x40
 }
 
 async function getAppVersion() {
