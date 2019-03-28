@@ -1,4 +1,4 @@
-const {Transaction} = require('@zilliqa-js/account');
+const txnEncoder = require('@zilliqa-js/account/dist/util').encodeTransactionProto;
 
 const CLA = 0xe0;
 const INS = {
@@ -115,7 +115,7 @@ class Zilliqa {
         const P1 = 0x00;
         const P2 = 0x00;
 
-        const encodedTxn = txn.bytes();
+        const encodedTxn = txnEncoder(txParams);
 
         return this.transport
                    .send(CLA, INS.signTxn, P1, P2, encodedTxn)

@@ -38,7 +38,7 @@ async function installApp() {
                     return resolve(err);
                 }
 
-                console.info(chalk.blue("Saved Zilliqa hex file."));
+                console.info(chalk.blue("Downloaded Zilliqa hex file."));
                 console.info(chalk.blue("Ledger device will ask you for confirmations..."));
 
                 const proc = require("./installApp");
@@ -133,11 +133,36 @@ async function signHash() {
 }
 
 async function signTxn() {
-    throw Error('not implemented');
+    const transport = await open();
+    if (transport instanceof Error) {
+        return transport.message
+    }
+
+    const q = "> Enter the path to the transaction JSON file: ";
+    return await new Promise((resolve) => {
+        getReadlineInterface().question(chalk.yellow(q), async (txnJsonFile) => {
+            if (typeof txnJsonFile !== "string" ) {
+                console.error("Need to specify path to a JSON file.");
+                return resolve("Bad input.");
+            }
+
+            const txnParams = JSON.parse(fs.readFileSync(txnJsonFile, 'utf8'));
+
+            const zil = new Z(transport);
+            return zil.signTxn(txnParams).then(r => {
+                transport.close().catch(e => {
+                    console.error(e.message);
+                }).then(() => {
+                    return resolve(r)
+                });
+                return resolve(r);
+            });
+
+        });
+    });
 }
 
 module.exports = [
-    null,
     installApp,
     getAppVersion,
     getPubKey,

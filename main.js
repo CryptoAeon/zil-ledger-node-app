@@ -5,6 +5,7 @@ const choices = [
     "Download and install the Ledger app",
     "Get the app version",
     "Generate public key",
+    "Get public address",
     "Sign hash (32 bytes)",
     "Sign transaction (max 256 bytes)",
     "Exit"
@@ -30,14 +31,14 @@ async function promptUser() {
     });
 
     console.log(chalk.yellow(`\nPlease enter a number between 1 and ${choices.length}:`));
-    const exitN = choices.length - 1;
+    const exitN = choices.length;
     return await new Promise((resolve) => {
         rl.question(chalk.yellow(menu), async (answer) => {
             if (isNaN(answer)) {
                 console.log(`Invalid number: ${answer}`);
             }
 
-            const choiceIdx = Number(answer);
+            const choiceIdx = Number(answer) - 1;
             if (choiceIdx === exitN) {
                 return resolve(true);
             }
