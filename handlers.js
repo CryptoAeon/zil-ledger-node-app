@@ -16,13 +16,10 @@ function getReadlineInterface() {
 }
 
 async function open() {
-    try {
-        const t = await TransportNodeHid.open("");
-        t.setDebugMode(true);
-        return t;
-    } catch (e) {
-        return e.message;
-    }
+    // This might throw if device not connected via USB
+    const t = await TransportNodeHid.open("");
+    t.setDebugMode(true);
+    return t;
 }
 
 async function installApp() {
@@ -129,7 +126,37 @@ async function getPublicAddress() {
 }
 
 async function signHash() {
-    throw Error('not implemented');
+    const transport = await open();
+
+    const q = "> Enter the signature bytes: ";
+    return await new Promise((resolve) => {
+        getReadlineInterface().question(chalk.yellow(q), async (signatureStr) => {
+            if (typeof signatureStr !== "string") {
+                console.error("Signature should be a string.");
+                return resolve("Bad input.");
+            }
+
+            const q2 = "> Enter the key index: ";
+            getReadlineInterface().question(chalk.yellow(q2), async (index) => {
+                if (isNaN(index)) {
+                    console.error("Index should be an integer.");
+                    return resolve("Bad input.");
+                }
+
+
+                const zil = new Z(transport);
+                return zil.signHash(index, signatureStr).then(r => {
+                    transport.close().catch(e => {
+                        console.error(e.message);
+                    }).then(() => {
+                        return resolve(r)
+                    });
+                    return resolve(r);
+                });
+
+            });
+        });
+    });
 }
 
 async function signTxn() {

@@ -85,12 +85,12 @@ class Zilliqa {
                    });
     }
 
-    signHash(signatureStr) {
+    signHash(keyIndex, signatureStr) {
         const P1 = 0x00;
         const P2 = 0x00;
 
         let indexBytes = new Buffer(4);
-        indexBytes.writeInt32LE(index);
+        indexBytes.writeInt32LE(keyIndex);
 
         const sigBYtes = Buffer.from(signatureStr, "hex");
         let sigLen = sigBYtes.length;

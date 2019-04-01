@@ -44,8 +44,13 @@ async function promptUser() {
             }
 
             if (handlers[choiceIdx]) {
-                const r = await handlers[choiceIdx]();
-                console.log(chalk.blue(JSON.stringify(r, null, 2)));
+                try {
+                    const r = await handlers[choiceIdx]();
+                    console.log(chalk.blue(JSON.stringify(r, null, 2)));
+                }
+                catch (e) {
+                    console.error("Encountered error: " + e.message);
+                }
             }
 
             rl.close();
