@@ -85,7 +85,7 @@ async function getPubKey() {
                 return resolve("Bad input.");
             }
             const zil = new Z(transport);
-            return zil.getPublicAddress(index).then(r => {
+            return zil.getPublicKey(index).then(r => {
                 transport.close().catch(e => {
                     console.error(e.message);
                 }).then(() => {
