@@ -174,8 +174,9 @@ async function signTxn() {
                 return resolve("Bad input.");
             }
 
+            let txnParams;
             try {
-                const txnParams = JSON.parse(fs.readFileSync(txnJsonFile, 'utf8'));
+                txnParams = JSON.parse(fs.readFileSync(txnJsonFile, 'utf8'));
             }
             catch (e) {
                 reject(e);

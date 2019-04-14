@@ -1,4 +1,5 @@
 const txnEncoder = require('@zilliqa-js/account/dist/util').encodeTransactionProto;
+const { BN, Long } = require('@zilliqa-js/util');
 
 const CLA = 0xe0;
 const INS = {
@@ -6,14 +7,14 @@ const INS = {
     "getPublickKey": 0x02,
     "getAddress": 0x02,
     "signHash": 0x04,
-    "signTxn": 0x06
+    "signTxn": 0x08
 };
 
 function extractResultFromResponse(response) {
     const sepIdx = response.length - 2;
     const lenBytes = response.slice(sepIdx);
     const len = lenBytes.readUIntBE(0, lenBytes.length);
-    return response.slice(0, len);
+    return response.slice(0, len).toString('hex');;
 }
 
 /**
@@ -111,11 +112,25 @@ class Zilliqa {
                    });
     }
 
-    signTxn(txParams) {
+    signTxn(txnParams) {
+        // https://github.com/Zilliqa/Zilliqa-JavaScript-Library/tree/dev/packages/zilliqa-js-account#interfaces
         const P1 = 0x00;
         const P2 = 0x00;
 
-        const encodedTxn = txnEncoder(txParams);
+        // Convert to Zilliqa types
+        if (!(txnParams.amount instanceof BN)) {
+            txnParams.amount = new BN(txnParams.amount);
+        }
+
+        if (!(txnParams.gasPrice instanceof BN)) {
+            txnParams.gasPrice = new BN(txnParams.gasPrice);
+        }
+
+        if (!(txnParams.gasLimit instanceof Long)) {
+            txnParams.gasLimit = Long.fromNumber(txnParams.gasLimit);
+        }
+
+        const encodedTxn = txnEncoder(txnParams);
 
         return this.transport
                    .send(CLA, INS.signTxn, P1, P2, encodedTxn)
