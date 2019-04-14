@@ -10,6 +10,12 @@ Assuming `--targetId 0x31100004`.\
 > This might change with future nano upgrades
 
 
+## Connect your Ledge device
+
+All options below require an active USB conenction to your Ledger device.
+Each step is interactive so pay attention to device's screen after you select 
+something from the menu.
+
 ## Menu
 
 ```
