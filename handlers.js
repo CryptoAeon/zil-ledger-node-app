@@ -24,15 +24,15 @@ async function open() {
 
 async function installApp() {
     const opts = {url: ELF_URL, timeout: 5, encoding: null};
-    return await new Promise(resolve => {
+    return await new Promise( (resolve, reject) => {
         curl.request(opts, function (err, hexFile) {
             if (err) {
-                return resolve(err);
+                return reject(err);
             }
 
             fs.writeFile("./app.hex", hexFile, function (err) {
                 if (err) {
-                    return resolve(err);
+                    return reject(err);
                 }
 
                 console.info(chalk.blue("Downloaded Zilliqa hex file."));
@@ -42,6 +42,7 @@ async function installApp() {
                 proc.on('exit', (exitCode) => {
                     if (exitCode !== 0) {
                         console.error(`Installation failed: ${exitCode}`);
+                        reject(exitCode);
                     }
                     else {
                         console.info(chalk.blue(`Installation successful!`));
@@ -68,7 +69,7 @@ async function getAppVersion() {
             return r
         });
         return r;
-    });
+    }).catch(e => { reject(e); });;
 }
 
 async function getPubKey() {
@@ -78,7 +79,7 @@ async function getPubKey() {
     }
 
     const q = "> Enter the key index: ";
-    return await new Promise((resolve) => {
+    return await new Promise((resolve, reject) => {
         getReadlineInterface().question(chalk.yellow(q), async (index) => {
             if (isNaN(index)) {
                 console.error("Index should be an integer.");
@@ -92,7 +93,7 @@ async function getPubKey() {
                     return resolve(r)
                 });
                 return resolve(r);
-            });
+            }).catch(e => { reject(e); });
 
         });
     });
@@ -105,7 +106,7 @@ async function getPublicAddress() {
     }
 
     const q = "> Enter the key index: ";
-    return await new Promise((resolve) => {
+    return await new Promise((resolve, reject) => {
         getReadlineInterface().question(chalk.yellow(q), async (index) => {
             if (isNaN(index)) {
                 console.error("Index should be an integer.");
@@ -119,7 +120,7 @@ async function getPublicAddress() {
                     return resolve(r)
                 });
                 return resolve(r);
-            });
+            }).catch(e => { reject(e); });
 
         });
     });
@@ -129,18 +130,18 @@ async function signHash() {
     const transport = await open();
 
     const q = "> Enter the signature bytes: ";
-    return await new Promise((resolve) => {
+    return await new Promise((resolve, reject) => {
         getReadlineInterface().question(chalk.yellow(q), async (signatureStr) => {
             if (typeof signatureStr !== "string") {
                 console.error("Signature should be a string.");
-                return resolve("Bad input.");
+                return reject("Bad input.");
             }
 
             const q2 = "> Enter the key index: ";
             getReadlineInterface().question(chalk.yellow(q2), async (index) => {
                 if (isNaN(index)) {
                     console.error("Index should be an integer.");
-                    return resolve("Bad input.");
+                    return reject("Bad input.");
                 }
 
 
@@ -152,7 +153,7 @@ async function signHash() {
                         return resolve(r)
                     });
                     return resolve(r);
-                });
+                }).catch(e => { reject(e); });;
 
             });
         });
@@ -166,14 +167,20 @@ async function signTxn() {
     }
 
     const q = "> Enter the path to the transaction JSON file: ";
-    return await new Promise((resolve) => {
+    return await new Promise((resolve, reject) => {
         getReadlineInterface().question(chalk.yellow(q), async (txnJsonFile) => {
-            if (typeof txnJsonFile !== "string" ) {
+            if (typeof txnJsonFile !== "string") {
                 console.error("Need to specify path to a JSON file.");
                 return resolve("Bad input.");
             }
 
-            const txnParams = JSON.parse(fs.readFileSync(txnJsonFile, 'utf8'));
+            try {
+                const txnParams = JSON.parse(fs.readFileSync(txnJsonFile, 'utf8'));
+            }
+            catch (e) {
+                reject(e);
+                return;
+            }
 
             const zil = new Z(transport);
             return zil.signTxn(txnParams).then(r => {
@@ -183,7 +190,7 @@ async function signTxn() {
                     return resolve(r)
                 });
                 return resolve(r);
-            });
+            }).catch(e => { reject(e); });
 
         });
     });

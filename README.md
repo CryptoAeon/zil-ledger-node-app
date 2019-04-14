@@ -1,5 +1,15 @@
 # Zillqa Ledger Nano S App (NodeJS)
 
+## Install
+
+``` yarn install ``` (or `npm install`)
+
+## Nano S Firmware
+
+Assuming `--targetId 0x31100004`.\
+> This might change with future nano upgrades
+
+
 ## Menu
 
 ```

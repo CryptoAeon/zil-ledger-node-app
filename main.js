@@ -31,7 +31,7 @@ async function promptUser() {
     });
 
     console.log(chalk.yellow(`\nPlease enter a number between 1 and ${choices.length}:`));
-    const exitN = choices.length;
+    const exitN = choices.length - 1;
     return await new Promise((resolve) => {
         rl.question(chalk.yellow(menu), async (answer) => {
             if (isNaN(answer)) {
@@ -67,7 +67,7 @@ async function main() {
             const done = await promptUser();
             if (done) {
                 console.log("Goodbye!");
-                break;
+                process.exit(0);
             }
         }
         catch(e) {
