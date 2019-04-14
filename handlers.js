@@ -11,7 +11,8 @@ const ELF_URL = 'https://github.com/CryptoAeon/zil-ledger-nano-s/releases/downlo
 function getReadlineInterface() {
     return readline.createInterface({
         input: process.stdin,
-        output: process.stdout
+        output: process.stdout,
+        terminal: false
     });
 }
 
@@ -183,16 +184,25 @@ async function signTxn() {
                 return;
             }
 
-            const zil = new Z(transport);
-            return zil.signTxn(txnParams).then(r => {
-                transport.close().catch(e => {
-                    console.error(e.message);
-                }).then(() => {
-                    return resolve(r)
-                });
-                return resolve(r);
-            }).catch(e => { reject(e); });
+            const q2 = "> Enter the key index: ";
+            getReadlineInterface().question(chalk.yellow(q2), async (keyIndex) => {
+                if (isNaN(keyIndex)) {
+                    console.error("Index should be an integer.");
+                    return reject("Bad input.");
+                }
 
+                const zil = new Z(transport);
+                return zil.signTxn(keyIndex, txnParams).then(r => {
+                    transport.close().catch(e => {
+                        console.error(e.message);
+                    }).then(() => {
+                        return resolve(r)
+                    });
+                    return resolve(r);
+                }).catch(e => {
+                    reject(e);
+                });
+            });
         });
     });
 }

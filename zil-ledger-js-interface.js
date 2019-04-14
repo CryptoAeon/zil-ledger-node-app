@@ -60,7 +60,7 @@ class Zilliqa {
         const P1 = 0x00;
         const P2 = 0x01;
 
-        let payload = new Buffer(4);
+        let payload = Buffer.alloc(4);
         payload.writeInt32LE(index);
 
         return this.transport
@@ -75,7 +75,7 @@ class Zilliqa {
         const P1 = 0x00;
         const P2 = 0x00;
 
-        let payload = new Buffer(4);
+        let payload = Buffer.alloc(4);
         payload.writeInt32LE(index);
 
         return this.transport
@@ -90,7 +90,7 @@ class Zilliqa {
         const P1 = 0x00;
         const P2 = 0x00;
 
-        let indexBytes = new Buffer(4);
+        let indexBytes = Buffer.alloc(4);
         indexBytes.writeInt32LE(keyIndex);
 
         const sigBYtes = Buffer.from(signatureStr, "hex");
@@ -112,10 +112,13 @@ class Zilliqa {
                    });
     }
 
-    signTxn(txnParams) {
+    signTxn(keyIndex, txnParams) {
         // https://github.com/Zilliqa/Zilliqa-JavaScript-Library/tree/dev/packages/zilliqa-js-account#interfaces
         const P1 = 0x00;
         const P2 = 0x00;
+
+        let indexBytes = Buffer.alloc(4);
+        indexBytes.writeInt32LE(keyIndex);
 
         // Convert to Zilliqa types
         if (!(txnParams.amount instanceof BN)) {
@@ -131,9 +134,12 @@ class Zilliqa {
         }
 
         const encodedTxn = txnEncoder(txnParams);
+        let txnSizeBytes = Buffer.alloc(4);
+        txnSizeBytes.writeInt32LE(encodedTxn.length);
+        const payload = Buffer.concat([indexBytes, txnSizeBytes, encodedTxn]);
 
         return this.transport
-                   .send(CLA, INS.signTxn, P1, P2, encodedTxn)
+                   .send(CLA, INS.signTxn, P1, P2, payload)
                    .then(response => {
                        return { sig: extractResultFromResponse(response) }
                    });
