@@ -11,10 +11,8 @@ const INS = {
 };
 
 function extractResultFromResponse(response) {
-    const sepIdx = response.length - 2;
-    const lenBytes = response.slice(sepIdx);
-    const len = lenBytes.readUIntBE(0, lenBytes.length);
-    return response.slice(0, len).toString('hex');;
+    // 72 is the signature length as defined in the low level nano s syscall
+    return response.slice(0, 72).toString('hex');
 }
 
 /**
