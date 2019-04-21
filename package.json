@@ -7,7 +7,7 @@
   "license": "GPLv3",
   "dependencies": {
     "@ledgerhq/hw-transport-node-hid": "^4.48.0",
-    "@zilliqa-js/account": "^0.5.1",
+    "@zilliqa-js/zilliqa": "^0.5.3",
     "babel-polyfill": "^6.26.0",
     "chalk": "^2.4.2",
     "curlrequest": "^1.0.1",

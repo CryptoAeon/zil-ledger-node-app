@@ -1,5 +1,6 @@
 const txnEncoder = require('@zilliqa-js/account/dist/util').encodeTransactionProto;
-const { BN, Long } = require('@zilliqa-js/util');
+const {BN, Long} = require('@zilliqa-js/util');
+const {compressPublicKey} = require('@zilliqa-js/crypto/dist/util');
 
 const CLA = 0xe0;
 const INS = {
@@ -41,17 +42,17 @@ class Zilliqa {
         const P2 = 0x00;
 
         return this.transport
-                   .send(CLA, INS.getVersion, P1, P2)
-                   .then(response => {
-                       let version = "v";
-                       for (let i = 0; i < 3; ++i) {
-                           version += parseInt("0x" + response[i]);
-                           if (i !== 2) {
-                               version += "."
-                           }
-                       }
-                       return {version};
-                   });
+            .send(CLA, INS.getVersion, P1, P2)
+            .then(response => {
+                let version = "v";
+                for (let i = 0; i < 3; ++i) {
+                    version += parseInt("0x" + response[i]);
+                    if (i !== 2) {
+                        version += "."
+                    }
+                }
+                return {version};
+            });
     }
 
     getPublicKey(index) {
@@ -62,11 +63,11 @@ class Zilliqa {
         payload.writeInt32LE(index);
 
         return this.transport
-                   .send(CLA, INS.getAddress, P1, P2, payload)
-                   .then(response => {
-                       const publicKey = response.toString("hex");
-                       return {publicKey};
-                   });
+            .send(CLA, INS.getAddress, P1, P2, payload)
+            .then(response => {
+                const publicKey = response.toString("hex").slice(0, 32);
+                return {publicKey};
+            });
     }
 
     getPublicAddress(index) {
@@ -77,11 +78,11 @@ class Zilliqa {
         payload.writeInt32LE(index);
 
         return this.transport
-                   .send(CLA, INS.getPublickKey, P1, P2, payload)
-                   .then(response => {
-                       const pubAddr = response.toString("hex").slice(0, 20);
-                       return {pubAddr};
-                   });
+            .send(CLA, INS.getPublickKey, P1, P2, payload)
+            .then(response => {
+                const pubAddr = response.toString("hex").slice(32);
+                return {pubAddr};
+            });
     }
 
     signHash(keyIndex, signatureStr) {
@@ -104,10 +105,10 @@ class Zilliqa {
         const payload = Buffer.concat([indexBytes, sigBYtes]);
 
         return this.transport
-                   .send(CLA, INS.signHash, P1, P2, payload)
-                   .then(response => {
-                       return { sig: extractResultFromResponse(response) }
-                   });
+            .send(CLA, INS.signHash, P1, P2, payload)
+            .then(response => {
+                return {sig: extractResultFromResponse(response)}
+            });
     }
 
     signTxn(keyIndex, txnParams) {
@@ -137,10 +138,10 @@ class Zilliqa {
         const payload = Buffer.concat([indexBytes, txnSizeBytes, encodedTxn]);
 
         return this.transport
-                   .send(CLA, INS.signTxn, P1, P2, payload)
-                   .then(response => {
-                       return { sig: extractResultFromResponse(response) }
-                   });
+            .send(CLA, INS.signTxn, P1, P2, payload)
+            .then(response => {
+                return {sig: extractResultFromResponse(response)}
+            });
     }
 }
 
