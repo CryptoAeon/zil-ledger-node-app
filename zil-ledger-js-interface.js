@@ -6,7 +6,7 @@ const CLA = 0xe0;
 const INS = {
     "getVersion": 0x01,
     "getPublickKey": 0x02,
-    "getAddress": 0x02,
+    "getPublicAddress": 0x02,
     "signHash": 0x04,
     "signTxn": 0x08
 };
@@ -32,6 +32,9 @@ class Zilliqa {
             [
                 "getVersion",
                 "getPublicKey",
+                "getPublicAddress",
+                "signHash",
+                "signTxn"
             ],
             scrambleKey
         );
@@ -63,7 +66,7 @@ class Zilliqa {
         payload.writeInt32LE(index);
 
         return this.transport
-            .send(CLA, INS.getAddress, P1, P2, payload)
+            .send(CLA, INS.getPublickKey, P1, P2, payload)
             .then(response => {
                 const publicKey = response.toString("hex").slice(0, 32);
                 return {publicKey};
@@ -78,7 +81,7 @@ class Zilliqa {
         payload.writeInt32LE(index);
 
         return this.transport
-            .send(CLA, INS.getPublickKey, P1, P2, payload)
+            .send(CLA, INS.getPublicAddress, P1, P2, payload)
             .then(response => {
                 const pubAddr = response.toString("hex").slice(32);
                 return {pubAddr};
