@@ -68,7 +68,7 @@ class Zilliqa {
         return this.transport
             .send(CLA, INS.getPublickKey, P1, P2, payload)
             .then(response => {
-                const publicKey = response.toString("hex").slice(0, 32);
+                const publicKey = response.toString("hex").slice(0, 64);
                 return {publicKey};
             });
     }
@@ -83,7 +83,7 @@ class Zilliqa {
         return this.transport
             .send(CLA, INS.getPublicAddress, P1, P2, payload)
             .then(response => {
-                const pubAddr = response.toString("hex").slice(32);
+                const pubAddr = response.toString("hex").slice(40);
                 return {pubAddr};
             });
     }
