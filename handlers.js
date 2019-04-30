@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const fs = require('fs');
 const curl = require('curlrequest')
 
-const ELF_URL = 'https://github.com/CryptoAeon/zil-ledger-nano-s/releases/download/0.1.5/app.hex';
+const ELF_URL = 'https://github.com/CryptoAeon/zil-ledger-nano-s/releases/download/0.1.7/app.hex';
 
 function getReadlineInterface() {
     return readline.createInterface({
