@@ -130,11 +130,11 @@ async function getPublicAddress() {
 async function signHash() {
     const transport = await open();
 
-    const q = "> Enter the signature bytes: ";
+    const q = "> Enter the hash bytes: ";
     return await new Promise((resolve, reject) => {
-        getReadlineInterface().question(chalk.yellow(q), async (signatureStr) => {
-            if (typeof signatureStr !== "string") {
-                console.error("Signature should be a string.");
+        getReadlineInterface().question(chalk.yellow(q), async (hashStr) => {
+            if (typeof hashStr !== "string") {
+                console.error("hash should be a string.");
                 return reject("Bad input.");
             }
 
@@ -147,7 +147,7 @@ async function signHash() {
 
 
                 const zil = new Z(transport);
-                return zil.signHash(index, signatureStr).then(r => {
+                return zil.signHash(index, hashStr).then(r => {
                     transport.close().catch(e => {
                         console.error(e.message);
                     }).then(() => {
