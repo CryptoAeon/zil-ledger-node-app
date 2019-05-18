@@ -9,7 +9,7 @@ const proc = spawn('python', [
     "--delete",
     "--fileName", "app.hex",
     "--appName", "Zilliqa",
-    "--appVersion", "0.1.0",
+    "--appVersion", "0.2.0",
     "--appFlags", "0x40"
 ]);
 var bytesToStr = function (data) {

@@ -11,6 +11,10 @@ const INS = {
     "signTxn": 0x08
 };
 
+const PubKeyByteLen = 33;
+const AddrByteLen = 20;
+const SigByteLen = 32;
+
 function extractResultFromResponse(response) {
     // 72 is the signature length as defined in the low level nano s syscall
     return response.slice(0, 72).toString('hex');
@@ -60,7 +64,7 @@ class Zilliqa {
 
     getPublicKey(index) {
         const P1 = 0x00;
-        const P2 = 0x01;
+        const P2 = 0x00;
 
         let payload = Buffer.alloc(4);
         payload.writeInt32LE(index);
@@ -68,14 +72,14 @@ class Zilliqa {
         return this.transport
             .send(CLA, INS.getPublickKey, P1, P2, payload)
             .then(response => {
-                const publicKey = response.toString("hex").slice(0, 64);
+                const publicKey = response.toString("hex").slice(0, (PubKeyByteLen*2));
                 return {publicKey};
             });
     }
 
     getPublicAddress(index) {
         const P1 = 0x00;
-        const P2 = 0x00;
+        const P2 = 0x01;
 
         let payload = Buffer.alloc(4);
         payload.writeInt32LE(index);
@@ -83,7 +87,7 @@ class Zilliqa {
         return this.transport
             .send(CLA, INS.getPublicAddress, P1, P2, payload)
             .then(response => {
-                const pubAddr = response.toString("hex").slice(40);
+                const pubAddr = response.toString("hex").slice((PubKeyByteLen*2), (PubKeyByteLen*2)+(AddrByteLen*2));
                 return {pubAddr};
             });
     }
