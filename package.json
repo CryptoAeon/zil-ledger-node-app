@@ -13,6 +13,7 @@
     "curlrequest": "^1.0.1",
     "readline-sync": "^1.4.9",
     "tslib": "^1.9.3",
+    "usb": "^1.5.0",
     "zil-ledger-js-interface": "^0.0.3"
   }
 }

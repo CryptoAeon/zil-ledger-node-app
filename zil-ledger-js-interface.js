@@ -1,6 +1,7 @@
 const txnEncoder = require('@zilliqa-js/account/dist/util').encodeTransactionProto;
 const {BN, Long} = require('@zilliqa-js/util');
 const {compressPublicKey} = require('@zilliqa-js/crypto/dist/util');
+const chalk = require('chalk');
 
 const CLA = 0xe0;
 const INS = {
@@ -11,10 +12,10 @@ const INS = {
     "signTxn": 0x08
 };
 
-function extractResultFromResponse(response) {
-    // 72 is the signature length as defined in the low level nano s syscall
-    return response.slice(0, 72).toString('hex');
-}
+const PubKeyByteLen = 33;
+const AddrByteLen = 20;
+const SigByteLen = 64;
+const HashByteLen = 32;
 
 /**
  * Zilliqa API
@@ -60,7 +61,7 @@ class Zilliqa {
 
     getPublicKey(index) {
         const P1 = 0x00;
-        const P2 = 0x01;
+        const P2 = 0x00;
 
         let payload = Buffer.alloc(4);
         payload.writeInt32LE(index);
@@ -68,14 +69,14 @@ class Zilliqa {
         return this.transport
             .send(CLA, INS.getPublickKey, P1, P2, payload)
             .then(response => {
-                const publicKey = response.toString("hex").slice(0, 64);
+                const publicKey = response.toString("hex").slice(0, (PubKeyByteLen*2));
                 return {publicKey};
             });
     }
 
     getPublicAddress(index) {
         const P1 = 0x00;
-        const P2 = 0x00;
+        const P2 = 0x01;
 
         let payload = Buffer.alloc(4);
         payload.writeInt32LE(index);
@@ -83,34 +84,34 @@ class Zilliqa {
         return this.transport
             .send(CLA, INS.getPublicAddress, P1, P2, payload)
             .then(response => {
-                const pubAddr = response.toString("hex").slice(40);
+                const pubAddr = response.toString("hex").slice((PubKeyByteLen*2), (PubKeyByteLen*2)+(AddrByteLen*2));
                 return {pubAddr};
             });
     }
 
-    signHash(keyIndex, signatureStr) {
+    signHash(keyIndex, hashStr) {
         const P1 = 0x00;
         const P2 = 0x00;
 
         let indexBytes = Buffer.alloc(4);
         indexBytes.writeInt32LE(keyIndex);
 
-        const sigBYtes = Buffer.from(signatureStr, "hex");
-        let sigLen = sigBYtes.length;
-        if (sigLen <= 0) {
-            throw Error(`Signature length ${sigLen} is invalid`);
+        const hashBytes = Buffer.from(hashStr, "hex");
+        let hashLen = hashBytes.length;
+        if (hashLen <= 0) {
+            throw Error(`Hash length ${hashLen} is invalid`);
         }
 
-        if (sigLen > 64) {
-            sigBYtes.slice(0, 64);
+        if (hashLen > HashByteLen) {
+            hashBytes.slice(0, HashByteLen);
         }
 
-        const payload = Buffer.concat([indexBytes, sigBYtes]);
+        const payload = Buffer.concat([indexBytes, hashBytes]);
 
         return this.transport
             .send(CLA, INS.signHash, P1, P2, payload)
             .then(response => {
-                return {sig: extractResultFromResponse(response)}
+                return {sig: response.toString('hex').slice(0, SigByteLen * 2)}
             });
     }
 
@@ -136,6 +137,8 @@ class Zilliqa {
         }
 
         const encodedTxn = txnEncoder(txnParams);
+        const message = JSON.stringify({"Encoded transaction" : encodedTxn.toString('hex')}, null, 2);
+        console.log(chalk.green(message));
         let txnSizeBytes = Buffer.alloc(4);
         txnSizeBytes.writeInt32LE(encodedTxn.length);
         const payload = Buffer.concat([indexBytes, txnSizeBytes, encodedTxn]);
@@ -143,7 +146,7 @@ class Zilliqa {
         return this.transport
             .send(CLA, INS.signTxn, P1, P2, payload)
             .then(response => {
-                return {sig: extractResultFromResponse(response)}
+                return {sig: (response.toString('hex').slice(0, SigByteLen * 2))}
             });
     }
 }
