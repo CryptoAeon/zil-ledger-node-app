@@ -16,6 +16,8 @@ const PubKeyByteLen = 33;
 const AddrByteLen = 20;
 const SigByteLen = 64;
 const HashByteLen = 32;
+// https://github.com/Zilliqa/Zilliqa/wiki/Address-Standard#specification
+const Bech32AddrLen = "zil".length + 1 + 32 + 6;
 
 /**
  * Zilliqa API
@@ -69,6 +71,7 @@ class Zilliqa {
         return this.transport
             .send(CLA, INS.getPublickKey, P1, P2, payload)
             .then(response => {
+                // The first PubKeyByteLen bytes are the public address.
                 const publicKey = response.toString("hex").slice(0, (PubKeyByteLen*2));
                 return {publicKey};
             });
@@ -84,7 +87,8 @@ class Zilliqa {
         return this.transport
             .send(CLA, INS.getPublicAddress, P1, P2, payload)
             .then(response => {
-                const pubAddr = response.toString("hex").slice((PubKeyByteLen*2), (PubKeyByteLen*2)+(AddrByteLen*2));
+                // After the first PubKeyByteLen bytes, the remaining is the bech32 address string.
+                const pubAddr = response.slice(PubKeyByteLen, PubKeyByteLen + Bech32AddrLen).toString("utf-8");
                 return {pubAddr};
             });
     }
