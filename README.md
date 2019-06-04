@@ -43,7 +43,7 @@ Please enter a number between 1 and 7:
 1. To install the Ledger Nano S application by entering the Option `1`
 2. You will be prompted with a screen "Allow Unknown Manager" on the Ledger Nano S device. Right click on the device to install
 3. Enter your PIN for the Ledger Nano S device to authorise the installation
-4. The latest Zilliqa *app.hex* file will be downloaded for you and installed on you Ledger Nano S device
+4. The latest Zilliqa `app.hex` file will be downloaded for you and installed on you Ledger Nano S device
 5. A success code will be shown on this companion app's command line:
      ```
      Installation successful!
@@ -100,7 +100,7 @@ Please enter a number between 1 and 7:
      ```
 
 ### Option 6: Sign Transaction
-1. Create a transaction payload by creating a `.json` file, for example `txn.json` under the directory `/zil-ledger-node-app/test1`. An example payload is as shown below:
+1. Create a transaction payload by creating a `.json` file, for example `txn.json` under the directory `/zil-ledger-node-app/test`. An example payload is as shown below:
      ```
      {
        "version": 65537,
