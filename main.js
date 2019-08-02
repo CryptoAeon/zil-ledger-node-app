@@ -6,8 +6,7 @@ const choices = [
     "Get the app version",
     "Generate public key",
     "Get public address",
-    "Sign hash (32 bytes)",
-    "Sign transaction (max 256 bytes)",
+    "Sign transaction",
     "Exit"
 ];
 
