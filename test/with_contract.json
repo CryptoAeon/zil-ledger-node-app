@@ -1,11 +1,11 @@
 {
   "version": 65537,
-  "nonce": 13,
-  "toAddr": "8AD0357EBB5515F694DE597EDA6F3F6BDBAD0FD9",
-  "amount": 100,
-  "pubKey": "0205273e54f262f8717a687250591dcfb5755b8ce4e3bd340c7abefd0de1276574",
-  "gasPrice": 1000000000,
-  "gasLimit": 1,
+  "nonce": 2,
+  "toAddr": "0000000000000000000000000000000000000000",
+  "amount": "0",
+  "pubKey": "037777383ae979242b957b00da8a901d909a38e934d2c636ef2cc1719a88670dd1",
+  "gasPrice": "1000000000",
+  "gasLimit": "10000",
   "code": "scilla_version 0\r\n\r\n    (* HelloWorld contract *)\r\n\r\n    import ListUtils\r\n\r\n    (***************************************************)\r\n    (*               Associated library                *)\r\n    (***************************************************)\r\n    library HelloWorld\r\n\r\n    let one_msg =\r\n      fun (msg : Message) =>\r\n      let nil_msg = Nil {Message} in\r\n      Cons {Message} msg nil_msg\r\n\r\n    let not_owner_code = Int32 1\r\n    let set_hello_code = Int32 2\r\n\r\n    (***************************************************)\r\n    (*             The contract definition             *)\r\n    (***************************************************)\r\n\r\n    contract HelloWorld\r\n    (owner: ByStr20)\r\n\r\n    field welcome_msg : String = \"\"\r\n\r\n    transition setHello (msg : String)\r\n      is_owner = builtin eq owner _sender;\r\n      match is_owner with\r\n      | False =>\r\n        msg = {_tag : \"Main\"; _recipient : _sender; _amount : Uint128 0; code : not_owner_code};\r\n        msgs = one_msg msg;\r\n        send msgs\r\n      | True =>\r\n        welcome_msg := msg;\r\n        msg = {_tag : \"Main\"; _recipient : _sender; _amount : Uint128 0; code : set_hello_code};\r\n        msgs = one_msg msg;\r\n        send msgs\r\n      end\r\n    end\r\n\r\n\r\n    transition getHello ()\r\n        r <- welcome_msg;\r\n        e = {_eventname: \"getHello()\"; msg: r};\r\n        event e\r\n    end",
-  "data": "\r\n        vname: \"_scilla_version\",\r\n        type: \"Uint32\",\r\n        value: \"0\"\r\n      },\r\n      {\r\n        vname: \"owner\",\r\n        type: \"ByStr20\",\r\n        \/\/ NOTE: all byte strings passed to Scilla contracts _must_ be\r\n        \/\/ prefixed with 0x. Failure to do so will result in the network\r\n        \/\/ rejecting the transaction while consuming gas!\r\n        value: `0x${address}`\r\n"
+  "data": "[\r\n    {\r\n        vname: \"_scilla_version\",\r\n        type: \"Uint32\",\r\n        value: \"0\"\r\n    },\r\n    {\r\n        vname: \"owner\",\r\n        type: \"ByStr20\",\r\n        value: \"0xEb60163Dc574e49d14fC43E50Cb5586FE504877B\"\r\n    }\r\n]"
 }
