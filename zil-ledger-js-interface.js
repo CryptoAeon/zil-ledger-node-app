@@ -117,7 +117,7 @@ class Zilliqa {
         const message = JSON.stringify({"Encoded transaction" : txnBytes.toString('hex')}, null, 2);
         console.log(chalk.green(message));
 
-        const STREAM_LEN = 32; // Stream in batches of STREAM_LEN bytes each.
+        const STREAM_LEN = 128; // Stream in batches of STREAM_LEN bytes each.
         var txn1Bytes;
         if (txnBytes.length > STREAM_LEN) {
             txn1Bytes = txnBytes.slice(0, STREAM_LEN);
@@ -162,7 +162,9 @@ class Zilliqa {
                         txnNSizeBytes.writeInt32LE(txnNBytes.length);
                         hostBytesLeftBytes.writeInt32LE(txnBytes.length);
                         const payload = Buffer.concat([hostBytesLeftBytes, txnNSizeBytes, txnNBytes]);
-                        return transport.exchange(payload).then(cb);
+                        // Except for the payload, all others are ignored in the device.
+                        // Only for the first send above will those paramters matter.
+                        return transport.send(CLA, INS.signTxn, P2, P2, payload).then(cb);
                     }
                     return response;
                 })
