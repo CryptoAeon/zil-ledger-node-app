@@ -1,0 +1,13 @@
+{
+  "version": 21823489,
+  "nonce": 3664,
+  "toAddr": "eC10d42d33B2FcB76F5d17c98d4d3b490E236C7d",
+  "amount": "0",
+  "pubKey": "0246e7178dc8253201101e18fd6f6eb9972451d121fc57aa2a06dd5c111e58dc6a",
+  "gasPrice": "1000000000",
+  "gasLimit": "10000",
+  "code": "",
+  "data": "{\"_tag\":\"TotalSupply\",\"params\":[]}",
+  "signature": "edaa4dc18f31debba1826f57bff4f57a9423d83ad25e5fc179f5a824d911e81d2a791833f632690541ec3c274780daab6377521d4ae1557d39f5f99ad6585789",
+  "priority": false
+}

@@ -1,0 +1,13 @@
+{
+  "version": 21823489,
+  "nonce": 3664,
+  "toAddr": "eC10d42d33B2FcB76F5d17c98d4d3b490E236C7d",
+  "amount": "0",
+  "pubKey": "0246e7178dc8253201101e18fd6f6eb9972451d121fc57aa2a06dd5c111e58dc6a",
+  "gasPrice": "1000000000",
+  "gasLimit": "10000",
+  "code": "",
+  "data": "{\"_tag\":\"RevokeOperator\",\"params\":[{\"vname\":\"operator\",\"type\":\"ByStr20\",\"value\":\"0x82aa26971ae03b85f42384cf382a25b25a796fdd\"}]}",
+  "signature": "eabf087ba486559ac5431fe6f2ec2e7d2b2b9fb0500834094e0ee5751e30fcd81938fc43eacfdd07f5a67e202c851f9306588711ebd738e4386b03d9aeb94425",
+  "priority": false
+}

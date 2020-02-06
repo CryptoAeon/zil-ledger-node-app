@@ -1,0 +1,13 @@
+{
+  "version": 21823489,
+  "nonce": 3664,
+  "toAddr": "eC10d42d33B2FcB76F5d17c98d4d3b490E236C7d",
+  "amount": "0",
+  "pubKey": "0246e7178dc8253201101e18fd6f6eb9972451d121fc57aa2a06dd5c111e58dc6a",
+  "gasPrice": "1000000000",
+  "gasLimit": "10000",
+  "code": "",
+  "data": "{\"_tag\":\"Allowance\",\"params\":[{\"vname\":\"token_owner\",\"type\":\"ByStr20\",\"value\":\"0x82aa26971ae03b85f42384cf382a25b25a796fdd\"},{\"vname\":\"spender\",\"type\":\"ByStr20\",\"value\":\"0x82aa26971ae03b85f42384cf382a25b25a796fdf\"}]}",
+  "signature": "f99d3a02b46ba60e61605d32e226900ffb385dfdbefb979c3d0e70ccc36ac2d2e7ab2344023f621b82ae9e15718bea20a95ee1bb5a78d8064f9ab5b7d10647cb",
+  "priority": false
+}

@@ -1,0 +1,13 @@
+{
+  "version": 21823489,
+  "nonce": 3664,
+  "toAddr": "eC10d42d33B2FcB76F5d17c98d4d3b490E236C7d",
+  "amount": "0",
+  "pubKey": "0246e7178dc8253201101e18fd6f6eb9972451d121fc57aa2a06dd5c111e58dc6a",
+  "gasPrice": "1000000000",
+  "gasLimit": "10000",
+  "code": "",
+  "data": "{\"_tag\":\"Transfer\",\"params\":[{\"vname\":\"to\",\"type\":\"ByStr20\",\"value\":\"0x9bfec715a6bd658fcb62b0f8cc9bfa2ade71434a\"},{\"vname\":\"tokens\",\"type\":\"Uint128\",\"value\":\"20\"}]}",
+  "signature": "f00bfa22db31e8dfeff502de0458bb74207040f66ed37ecd8e356cfdaea111c109dc4afc6bfdde84e25206243d462c6c8145b364ae1d46cc70280807091a07c3",
+  "priority": false
+}

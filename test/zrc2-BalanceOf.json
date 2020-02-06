@@ -1,0 +1,13 @@
+{
+  "version": 21823489,
+  "nonce": 3664,
+  "toAddr": "eC10d42d33B2FcB76F5d17c98d4d3b490E236C7d",
+  "amount": "0",
+  "pubKey": "0246e7178dc8253201101e18fd6f6eb9972451d121fc57aa2a06dd5c111e58dc6a",
+  "gasPrice": "1000000000",
+  "gasLimit": "10000",
+  "code": "",
+  "data": "{\"_tag\":\"BalanceOf\",\"params\":[{\"vname\":\"address\",\"type\":\"ByStr20\",\"value\":\"0x82aa26971ae03b85f42384cf382a25b25a796fdd\"}]}",
+  "signature": "86d437aad775105c3f36872c28f78b5d1099822cc81e9aa744f5dfe746bba959d1b513635c1ac6ecd6cad8b8fbaf61a56d97de278084fbcd92d4acd2801af36d",
+  "priority": false
+}
