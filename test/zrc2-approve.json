@@ -1,0 +1,12 @@
+{
+    "version":21823489,
+    "nonce":944,
+    "toAddr":"eC10d42d33B2FcB76F5d17c98d4d3b490E236C7d",
+    "amount":"0",
+    "pubKey":"0246e7178dc8253201101e18fd6f6eb9972451d121fc57aa2a06dd5c111e58dc6a",
+    "gasPrice":"1000000000","gasLimit":"10000",
+    "code":"",
+    "data":"{\"_tag\":\"Approve\",\"params\":[{\"vname\":\"spender\",\"type\":\"ByStr20\",\"value\":\"0x9bfec715a6bd658fcb62b0f8cc9bfa2ade71434a\"},{\"vname\":\"tokens\",\"type\":\"Uint128\",\"value\":\"500\"}]}",
+    "signature":"31f733c184062c1778ea7fea5d7852a4adb5ca8fe37b2fe6aaa367338d30ab7b0a8157d5502854f0cf093afee5eecb3403da8429566bd3d923b6dc1c1ad62fc3",
+    "priority":false
+}
