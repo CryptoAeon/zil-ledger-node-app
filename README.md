@@ -31,11 +31,11 @@ Welcome to the Zilliqa Ledger Node App!
 
 Please enter a number between 1 and 7:
 1) Download and install the Ledger app
-2) Get the app version
-3) Generate public key
-4) Get public address
-5) Sign hash (32 bytes)
-6) Sign transaction (max 256 bytes)
+2) Install app.hex in current directory
+3) Get the app version
+4) Generate public key
+5) Get public address
+6) Sign transaction
 7) Exit
 ```
 
