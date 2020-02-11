@@ -3,6 +3,7 @@ const chalk = require('chalk');
 
 const choices = [
     "Download and install the Ledger app",
+    "Install app.hex in current directory",
     "Get the app version",
     "Generate public key",
     "Get public address",

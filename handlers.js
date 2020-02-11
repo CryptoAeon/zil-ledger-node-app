@@ -23,7 +23,7 @@ async function open() {
     return t;
 }
 
-async function installApp() {
+async function downloadInstallApp() {
     const opts = {url: ELF_URL, timeout: 5, encoding: null};
     return await new Promise( (resolve, reject) => {
         curl.request(opts, function (err, hexFile) {
@@ -53,6 +53,23 @@ async function installApp() {
             });
         });
 
+    });
+}
+
+async function installApp (){
+    return await new Promise( (resolve, reject) => {
+        require("./installApp");
+        const proc = require("./installApp");
+        proc.on('exit', (exitCode) => {
+            if (exitCode !== 0) {
+                console.error(`Installation failed: ${exitCode}`);
+                reject(exitCode);
+            }
+            else {
+                console.info(chalk.blue(`Installation successful!`));
+            }
+            return resolve({exitCode});
+        });
     });
 }
 
@@ -174,6 +191,7 @@ async function signTxn() {
 }
 
 module.exports = [
+    downloadInstallApp,
     installApp,
     getAppVersion,
     getPubKey,
