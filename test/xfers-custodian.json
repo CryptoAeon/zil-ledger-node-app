@@ -1,0 +1,11 @@
+{
+  "version":65537,
+  "nonce":10000,
+  "toAddr":"6e263953c92b12060fd73885fc56e300631591f9",
+  "amount":"0",
+  "gasPrice":"1000000000",
+  "gasLimit":"40000",
+  "code":"",
+  "data":"{\"_tag\":\"SubmitCustomTransfer\",\"params\":[{\"vname\":\"proxyTokenContract\",\"type\":\"ByStr20\",\"value\":\"0x6e263953c92b12060fd73885fc56e300631591f9\"},{\"vname\":\"to\",\"type\":\"ByStr20\",\"value\":\"0x6e263953c92b12060fd73885fc56e300631591f9\"},{\"vname\":\"value\",\"type\":\"Uint128\",\"value\":\"100000000\"}]}",
+    "priority": false
+}
