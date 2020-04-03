@@ -8,6 +8,7 @@ const choices = [
     "Generate public key",
     "Get public address",
     "Sign transaction",
+    "Sign 256b hash",
     "Exit"
 ];
 

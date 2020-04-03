@@ -8,7 +8,8 @@ const INS = {
     "getVersion": 0x01,
     "getPublickKey": 0x02,
     "getPublicAddress": 0x02,
-    "signTxn": 0x04
+    "signTxn": 0x04,
+    "signHash": 0x08
 };
 
 const PubKeyByteLen = 33;
@@ -89,6 +90,27 @@ class Zilliqa {
                 // After the first PubKeyByteLen bytes, the remaining is the bech32 address string.
                 const pubAddr = response.slice(PubKeyByteLen, PubKeyByteLen + Bech32AddrLen).toString("utf-8");
                 return {pubAddr};
+            });
+    }
+
+    signHash(keyIndex, hashStr) {
+        const P1 = 0x00;
+        const P2 = 0x00;
+        let indexBytes = Buffer.alloc(4);
+        indexBytes.writeInt32LE(keyIndex);
+        const hashBytes = Buffer.from(hashStr, "hex");
+        let hashLen = hashBytes.length;
+        if (hashLen <= 0) {
+            throw Error(`Hash length ${hashLen} is invalid`);
+        }
+        if (hashLen > HashByteLen) {
+            hashBytes.slice(0, HashByteLen);
+        }
+        const payload = Buffer.concat([indexBytes, hashBytes]);
+        return this.transport
+            .send(CLA, INS.signHash, P1, P2, payload)
+            .then(response => {
+                return {sig: response.toString('hex').slice(0, SigByteLen * 2)}
             });
     }
 

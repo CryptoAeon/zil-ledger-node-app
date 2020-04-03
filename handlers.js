@@ -144,6 +144,35 @@ async function getPublicAddress() {
     });
 }
 
+async function signHash() {
+    const transport = await open();
+    const q = "> Enter the hash bytes: ";
+    return await new Promise((resolve, reject) => {
+        getReadlineInterface().question(chalk.yellow(q), async (hashStr) => {
+            if (typeof hashStr !== "string") {
+                console.error("hash should be a string.");
+                return reject("Bad input.");
+            }
+            const q2 = "> Enter the key index: ";
+            getReadlineInterface().question(chalk.yellow(q2), async (index) => {
+                if (isNaN(index)) {
+                    console.error("Index should be an integer.");
+                    return reject("Bad input.");
+                }
+                const zil = new Z(transport);
+                return zil.signHash(index, hashStr).then(r => {
+                    transport.close().catch(e => {
+                        console.error(e.message);
+                    }).then(() => {
+                        return resolve(r)
+                    });
+                    return resolve(r);
+                }).catch(e => { reject(e); });;
+            });
+        });
+    });
+}
+
 async function signTxn() {
     const transport = await open();
     if (transport instanceof Error) {
@@ -196,5 +225,6 @@ module.exports = [
     getAppVersion,
     getPubKey,
     getPublicAddress,
-    signTxn
+    signTxn,
+    signHash
 ];
