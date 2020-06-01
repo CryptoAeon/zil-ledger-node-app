@@ -8,6 +8,11 @@ function addByMnemonic(seed, index) {
   return wallet
 }
 
+/**
+ * show full account by mnemonic seed.
+ * run:
+ * node get-account.js 0 "mnemonic mnemonic etc..."
+ */
 function main() {
   const index = process.argv[2];
   const seed = process.argv[3];
