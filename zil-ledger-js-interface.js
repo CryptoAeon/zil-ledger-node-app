@@ -1,4 +1,5 @@
 const txnEncoder = require('@zilliqa-js/account/dist/util').encodeTransactionProto;
+const hdkey = require('hdkey');
 const {BN, Long} = require('@zilliqa-js/util');
 const {compressPublicKey} = require('@zilliqa-js/crypto/dist/util');
 const chalk = require('chalk');
@@ -18,6 +19,13 @@ const SigByteLen = 64;
 const HashByteLen = 32;
 // https://github.com/Zilliqa/Zilliqa/wiki/Address-Standard#specification
 const Bech32AddrLen = "zil".length + 1 + 32 + 6;
+
+function getAccount(seed, index) {
+    const hdKey = hdkey.fromMasterSeed(seed);
+    const childKey = hdKey.derive(`m/44'/313'/0'/0/${index}`);
+
+    return childKey
+}
 
 /**
  * Zilliqa API
