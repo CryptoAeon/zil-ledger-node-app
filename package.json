@@ -9,6 +9,7 @@
     "@ledgerhq/hw-transport-node-hid": "^5.16.0",
     "@zilliqa-js/zilliqa": "^0.10.1",
     "babel-polyfill": "^6.26.0",
+    "bip39": "^3.0.2",
     "chalk": "^4.0.0",
     "curlrequest": "^1.0.1",
     "readline-sync": "^1.4.10",
