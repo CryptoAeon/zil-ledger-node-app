@@ -1,7 +1,6 @@
-const readline = require('readline');
-const { Wallet } = require('@zilliqa-js/a');
+const { Wallet } = require('@zilliqa-js/account/dist/wallet');
 
-function addByMnemonic() {
+function addByMnemonic(seed, index) {
   const wallet = new Wallet('')
 
   wallet.addByMnemonic(seed, index)
@@ -10,9 +9,11 @@ function addByMnemonic() {
 }
 
 function main() {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  // const account = JSON.stringify(wallet, null, 4)
+  const index = process.argv[2];
+  const seed = process.argv[3];
+  const wallet = addByMnemonic(seed, index)
+  const account = JSON.stringify(wallet, null, 4)
+  console.log(account)
 }
+
+main();
