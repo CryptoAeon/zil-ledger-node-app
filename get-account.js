@@ -1,11 +1,21 @@
 const { Wallet } = require('@zilliqa-js/account/dist/wallet');
+const bip39 = require('bip39');
+const hdkey = require('hdkey');
 
-function addByMnemonic(seed, index) {
+
+function addByMnemonic(phrase, index) {
   const wallet = new Wallet('')
 
-  wallet.addByMnemonic(seed, index)
+  if (!wallet.isValidMnemonic(phrase)) {
+    throw new Error(`Invalid mnemonic phrase: ${phrase}`);
+  }
+  const seed = bip39.mnemonicToSeed(phrase);
+  const hdKey = hdkey.fromMasterSeed(seed);
+  const childKey = hdKey.derive(`m/44'/313'/0'/0/${index}`);
+  const privateKey = childKey.privateKey.toString('hex');
+  wallet.addByPrivateKey(privateKey);
 
-  return wallet
+  return wallet;
 }
 
 /**
