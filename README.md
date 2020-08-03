@@ -59,7 +59,7 @@ Please enter a number between 1 and 7:
 4. The current Zilliqa Ledger Nano S app version will be return in the companion app's command line:
      ```
      {
-       "version": "v0.4.0"
+       "version": "v0.4.1"
      }
      ```
 
